@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kettle &amp; Leaf – GA4 Test Store</title>
+
+  <!-- Google tag (gtag.js): replace G-XXXXXXXXXX with your Measurement ID (2 places) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX', { debug_mode: true });
+  </script>
+
+  <style>
+    body { font-family: Georgia, "Times New Roman", serif; max-width: 680px; margin: 0 auto; padding: 2rem 1.25rem; color: #1f2a24; background: #fbfbf8; line-height: 1.65; }
+    h1 { font-size: 2rem; margin-bottom: 0.25rem; }
+    .note { font-family: system-ui, sans-serif; font-size: 0.85rem; color: #5b6b62; }
+    .product { border-top: 1px solid #cfd8d2; padding: 1.25rem 0; }
+    .product h2 { font-size: 1.25rem; margin: 0; }
+    button { font-family: system-ui, sans-serif; font-size: 0.95rem; padding: 0.5rem 1rem; margin-right: 0.5rem; border: 1px solid #2f5d46; background: #2f5d46; color: #fff; border-radius: 4px; cursor: pointer; }
+    button.secondary { background: transparent; color: #2f5d46; }
+    button:focus-visible, a:focus-visible { outline: 2px solid #c27c0e; outline-offset: 2px; }
+    #status { font-family: system-ui, sans-serif; font-size: 0.9rem; color: #2f5d46; min-height: 1.5em; }
+    .filler { margin-top: 3rem; }
+  </style>
+</head>
+<body>
+  <h1>Kettle &amp; Leaf</h1>
+  <p class="note">Test store for a Digital Forensics assignment. No real products are sold.</p>
+
+  <div class="product">
+    <h2>Sencha green tea, 100 g</h2>
+    <p>$18.00</p>
+    <button onclick="track('add_to_cart')">Add to cart</button>
+    <button class="secondary" onclick="track('begin_checkout')">Checkout</button>
+    <button class="secondary" onclick="track('purchase')">Complete purchase</button>
+  </div>
+
+  <p id="status" role="status"></p>
+
+  <p>Other events captured automatically by GA4 enhanced measurement:</p>
+  <p><a href="https://www.wikipedia.org/">Outbound link to Wikipedia</a> (outbound click)</p>
+  <p><a href="sample.pdf">Download price list (PDF)</a> (file download)</p>
+
+  <div class="filler">
+    <p>Scroll to the bottom of this page to trigger the scroll event, which GA4 records at 90% page depth.</p>
+    <p style="height: 120vh;"></p>
+    <p>End of page.</p>
+  </div>
+
+  <script>
+    const item = { item_id: 'TEA-001', item_name: 'Sencha green tea', price: 18.00, quantity: 1 };
+    function track(eventName) {
+      const params = { currency: 'AUD', value: 18.00, items: [item] };
+      if (eventName === 'purchase') params.transaction_id = 'T' + Date.now();
+      gtag('event', eventName, params);
+      document.getElementById('status').textContent = 'Sent event: ' + eventName;
+    }
+  </script>
+</body>
+</html>
